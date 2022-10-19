@@ -4,17 +4,18 @@
         <h1>My Friends</h1>
     </header>
     
+    <new-friend @add-contact="addContact"></new-friend>
     <ul>
         <f-contact
-        name="manuel lorenz"
-        phone-number="1234 564 687"
-        email-address="manuel@localhost.com"
-        ></f-contact>
-
-        <f-contact
-        name="jolie jones"
-        phone-number="4638 585 869"
-        email-address="jolie@localhost.com"
+        v-for="friend in friends"
+        :key="friend.id"
+        :id="friend.id"
+        :name="friend.name"
+        :phone-number="friend.phone"
+        :email-address="friend.email"
+        :is-favorite="friend.isfavorite"
+        @toggle-fav="togglefavoritestatus"
+        @delete="deleteContact"
         ></f-contact>
     </ul>
 </template>
@@ -22,7 +23,9 @@
 
 
 <script>
+import newFriend from './component/newFriend.vue';
    export default{
+  components: { newFriend },
         data() {
             return{
                 friends:[
@@ -30,16 +33,41 @@
                         id: 'manuel',
                         name: 'manuel lorenz',
                         phone: '1234 564 687',
-                        email: 'manuel@localhost.com'
+                        email: 'manuel@localhost.com',
+                        isfavorite: true
                     },
 
                     {
                         id: 'jolie',
                         name: 'jolie jones',
                         phone: '4638 585 869',
-                        email: 'jolie@localhost.com'
+                        email: 'jolie@localhost.com',
+                        isfavorite: false
                     }
                 ]
+            }
+         },
+
+         methods: {
+            togglefavoritestatus(friendId) {
+                const friendidentified = this.friends.find( (friend) => friend.id === friendId);
+                friendidentified.isfavorite = ! friendidentified.isfavorite;
+
+            },
+
+            addContact(nname, pphone, eemail) {
+                const newfriend = {
+                    id: new Date().toISOString(),
+                    name: nname,
+                    phone: pphone,
+                    email: eemail,
+                    isfavorite: false,
+                }
+                this.friends.push(newfriend);
+            },
+
+            deleteContact(friendId){
+               this.friends= this.friends.filter(friend => friend.id !==friendId);
             }
          }
       }
@@ -77,7 +105,8 @@
             list-style: none;
             }
 
-            #app li {
+            #app li,
+            #app form {
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
             margin: 1rem auto;
             border-radius: 10px;
@@ -109,6 +138,10 @@
             background-color: #ec3169;
             border-color: #ec3169;
             box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
+            }
+
+            form div {
+                margin: 1rem 0;
             }
 
     </style>
