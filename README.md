@@ -49,3 +49,8 @@ If you like this project and want to support it, please give it a ⭐️!
 > Giving credit to everyone who inspired the codebase. (if there were any)
 
 I would like to thank:
+
+
+## 📝 License <a name="license"></a>
+
+This project is [MIT](./MIT.md) licensed.
